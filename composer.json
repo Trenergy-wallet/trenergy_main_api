@@ -1,0 +1,53 @@
+{
+    "name": "apd/trenergy",
+    "description": "trenergy",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "apd"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Apd\\Trenergy\\": "src/"
+        }
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "Apd\\Trenergy\\Tests\\": "tests/"
+        }
+    },
+
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^12.0"
+
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "orchestra/testbench": "^6.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "mockery/mockery": "^1.4"
+    },
+
+    "extra": {
+        "laravel": {
+            "providers": [
+                "apd\\trenergy\\Providers\\TrenergyServiceProvider"
+            ],
+
+            "aliases": {
+                "Trenergy": "apd\\trenergy\\Facades\\Trenergy"
+            }
+        }
+    },
+
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html coverage"
+    }
+}
