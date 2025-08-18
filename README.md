@@ -15,7 +15,8 @@ Official PHP client for Trenergy API with full Laravel integration.
 ## 🚀 Installation
 
 ```bash
-composer require apd/trenergy
+composer config repositories.trenergy-main-api vcs https://github.com/Trenergy-wallet/trenergy_main_api
+composer install
 php artisan vendor:publish --provider="Apd\Trenergy\Providers\TrenergyServiceProvider" --tag="config"
 ```
 
@@ -28,41 +29,72 @@ TRENERGY_API_KEY=your_api_key_here
 TRENERGY_API_LANG=en  # Supported: en, ru
 ```
 
-## 💻 Basic Usage
+## 💻 Basic Usage example
 
 ```php
 use Apd\Trenergy\Facades\Trenergy;
-use Apd\Trenergy\Enums\Consumers\PaymentPeriod;
 
 // Get account info
 $account = Trenergy::getAccount();
 
 // Create consumer
-$order = Trenergy::createConsumer(
-    paymentPeriod: PaymentPeriod::fifteenMinutes->value,
+$consumer = Trenergy::createConsumer(
+    paymentPeriod: '15', 
     address: 'TXYZ...',
     resourceAmount: 100.0,
-    name: 'My Consumer',
-    autoRenewal: true
+    name: 'My Consumer'
 );
+
+// Get wallets
+$wallets = Trenergy::getWallets();
 ```
 
 ## 🔧 Available Methods
 
-**Account Management**
+### Account Methods
 
-| Method | Return Type  |Description |
-|:-------------|:---------------:|-----------------------:|
-| getAccount() |   AccountDTO    | Get authenticated account |
-| getTopUp()   | AccountTopUpDTO |    Get top-up information |
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `getAccount()` | - | `AccountDTO|array` | Get user account information |
+| `getTopUp()` | - | `AccountTopUpDTO|array` | Get top-up address and QR code |
+| `subscribe()` | `bool $isBalanceUsed`, `?bool $isCredit` | `SubscribeDTO|array` | Create subscription |
 
-**Consumers Management**
+### Consumer Methods
 
-| Method                   |       Return Type       |           Description |
-|:-------------------------|:-----------------------:|----------------------:|
-| getConsumers()           | Collection<ConsumerDTO> |    List all consumers |
-| getConsumer(int $id)     |       ConsumerDTO       | Get specific consumer |
-| activateConsumer(int $id)|        ArrayDTO         |    Activate consumer  |
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `getConsumers()` | - | `Collection<ConsumerDTO>|array` | List all consumers |
+| `createConsumer()` | `string $paymentPeriod`, `string $address`, `float $resourceAmount`, `string $name`, `int $autoRenewal=0` | `OrderCreatedDTO|array` | Create new consumer |
+| `getConsumer()` | `int $consumerId` | `ConsumerDTO|array` | Get consumer details |
+| `activateConsumer()` | `int $consumerId` | `ArrayDTO|array` | Activate consumer |
+| `deActivateConsumer()` | `int $consumerId` | `ArrayDTO|array` | Deactivate consumer |
+| `updateConsumer()` | `int $consumerId`, `float $resourceAmount`, `int $paymentPeriod`, `bool $autoRenewal`, `?string $name` | `ConsumerDTO|array` | Update consumer |
+| `destroyConsumer()` | `int $consumerId` | `ArrayDTO|array` | Delete consumer |
+| `buyEnergy()` | `string $paymentPeriod`, `string $address`, `float $resourceAmount`, `string $name`, `int $autoRenewal=0` | `ArrayDTO|array` | Create and activate consumer |
+
+### Wallet Methods
+
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `getWallets()` | - | `Collection<WalletDTO>|array` | List all wallets |
+| `addWallet()` | `string $address` | `ArrayDTO|array` | Add new wallet |
+| `dropWallet()` | `int $walletId`, `string $oneTimePassword` | `ArrayDTO|array` | Remove wallet |
+
+### Stake Methods
+
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `stakes()` | `int $perPage=5` | `GetStakeDTO|array` | Get stake list |
+| `stake()` | `float $trxAmount` | `ArrayDTO|array` | Create new stake |
+| `unstake()` | `float $trxAmount`, `string $oneTimePassword` | `ArrayDTO|array` | Unstake funds |
+| `stakeProfitability()` | `?int $period` | `StakeProfitabilityDTO|array` | Get profitability stats |
+
+### AML Methods
+
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `amlList()` | `?string $fromDate`, `?string $toDate`, `?int $perPage` | `AmlListDTO|array` | Get AML records |
+| `amlCheck()` | `string $blockchain`, `?string $address`, `?string $txid` | `ArrayDTO|array` | Check AML status |
 		
 		
 ## 🏗 DTO Structure
@@ -79,15 +111,8 @@ echo $consumer->order->status; // Access nested OrderDTO
 
 ## 🚨 Error Handling
 
-```php
-use Apd\Trenergy\Exceptions\TrenergyWrongPaymentPeriod;
+All methods may throw:
+- `TrenergyServerErrorException`
+- `TrenergyWrongPaymentPeriod`
+- `RequireEnvParameters`
 
-try {
-    Trenergy::createConsumer(...);
-} catch (TrenergyWrongPaymentPeriod $e) {
-    // Handle invalid payment period
-    $allowedPeriods = $e->getMessage(); 
-} catch (\Exception $e) {
-    // Handle other errors
-}
-```
