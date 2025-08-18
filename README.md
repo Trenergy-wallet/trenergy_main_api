@@ -51,63 +51,44 @@ $wallets = Trenergy::getWallets();
 
 ## 🔧 Available Methods
 
-### Account Methods
-
 | Method | Parameters | Returns | Description |
 |--------|------------|---------|-------------|
-| `getAccount()` | - | `AccountDTO|array` | Get user account information |
-| `getTopUp()` | - | `AccountTopUpDTO|array` | Get top-up address and QR code |
-| `subscribe()` | `bool $isBalanceUsed`, `?bool $isCredit` | `SubscribeDTO|array` | Create subscription |
-
-### Consumer Methods
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `getConsumers()` | - | `Collection<ConsumerDTO>|array` | List all consumers |
-| `createConsumer()` | `string $paymentPeriod`, `string $address`, `float $resourceAmount`, `string $name`, `int $autoRenewal=0` | `OrderCreatedDTO|array` | Create new consumer |
-| `getConsumer()` | `int $consumerId` | `ConsumerDTO|array` | Get consumer details |
-| `activateConsumer()` | `int $consumerId` | `ArrayDTO|array` | Activate consumer |
-| `deActivateConsumer()` | `int $consumerId` | `ArrayDTO|array` | Deactivate consumer |
-| `updateConsumer()` | `int $consumerId`, `float $resourceAmount`, `int $paymentPeriod`, `bool $autoRenewal`, `?string $name` | `ConsumerDTO|array` | Update consumer |
-| `destroyConsumer()` | `int $consumerId` | `ArrayDTO|array` | Delete consumer |
-| `buyEnergy()` | `string $paymentPeriod`, `string $address`, `float $resourceAmount`, `string $name`, `int $autoRenewal=0` | `ArrayDTO|array` | Create and activate consumer |
-
-### Wallet Methods
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `getWallets()` | - | `Collection<WalletDTO>|array` | List all wallets |
-| `addWallet()` | `string $address` | `ArrayDTO|array` | Add new wallet |
-| `dropWallet()` | `int $walletId`, `string $oneTimePassword` | `ArrayDTO|array` | Remove wallet |
-
-### Stake Methods
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `stakes()` | `int $perPage=5` | `GetStakeDTO|array` | Get stake list |
-| `stake()` | `float $trxAmount` | `ArrayDTO|array` | Create new stake |
-| `unstake()` | `float $trxAmount`, `string $oneTimePassword` | `ArrayDTO|array` | Unstake funds |
-| `stakeProfitability()` | `?int $period` | `StakeProfitabilityDTO|array` | Get profitability stats |
-
-### AML Methods
-
-| Method | Parameters | Returns | Description |
-|--------|------------|---------|-------------|
-| `amlList()` | `?string $fromDate`, `?string $toDate`, `?int $perPage` | `AmlListDTO|array` | Get AML records |
-| `amlCheck()` | `string $blockchain`, `?string $address`, `?string $txid` | `ArrayDTO|array` | Check AML status |
+| `getAccount()` | - | `AccountDTO\|array` | Get account information |
+| `getTopUp()` | - | `AccountTopUpDTO\|array` | Get top-up information |
+| `subscribe()` | `bool $isBalanceUsed`, `?bool $isCredit = null` | `SubscribeDTO\|array` | Subscribe to service |
+| `getConsumers()` | - | `Collection<ConsumerDTO>\|array` | List all consumers |
+| `downLoadConsumerList()` | `?string $name`, `?bool $isActive`, `?bool $autoRenewal`, `?array $paymentPeriods`, `?array $wallet`, `?string $format` | `string` | Download consumer list |
+| `createConsumer()` | `string $paymentPeriod`, `string $address`, `float $resourceAmount`, `string $name`, `int $autoRenewal = 0` | `OrderCreatedDTO\|array` | Create new consumer |
+| `getConsumer()` | `int $consumerId` | `ConsumerDTO\|array` | Get consumer details |
+| `activateConsumer()` | `int $consumerId` | `ArrayDTO\|array` | Activate consumer |
+| `deActivateConsumer()` | `int $consumerId` | `ArrayDTO\|array` | Deactivate consumer |
+| `updateConsumer()` | `int $consumerId`, `float $resourceAmount`, `int $paymentPeriod`, `bool $autoRenewal`, `?string $name = null` | `ConsumerDTO\|array` | Update consumer |
+| `destroyConsumer()` | `int $consumerId` | `ArrayDTO\|array` | Delete consumer |
+| `buyEnergy()` | `string $paymentPeriod`, `string $address`, `float $resourceAmount`, `string $name`, `int $autoRenewal = 0` | `ArrayDTO\|array` | Create and activate consumer |
+| `toggleAutoRenewal()` | `bool $autoRenewal`, `array $consumersIds` | `ArrayDTO\|array` | Toggle auto-renewal |
+| `consumerBlockchainEnergy()` | `int $consumerId` | `BlockchainEnergyDTO\|array` | Get blockchain energy |
+| `consumerMassTrx()` | `float $amount`, `array $consumersIds` | `ArrayDTO\|array` | Mass TRX transfer |
+| `activateTronAddress()` | `string $address` | `ArrayDTO\|array` | Activate TRON address |
+| `consumerResetValidity()` | `int $consumerId` | `ArrayDTO\|array` | Reset validity period |
+| `consumerSummary()` | - | `ConsumerSummaryDTO\|array` | Get consumer summary |
+| `consumerAddressReport()` | `string $address`, `?string $fromDate`, `?string $toDate` | `ArrayDTO\|array` | Get address report |
+| `consumersConsumptionStats()` | `string $fromDate`, `string $toDate`, `?int $perPage` | `ConsumptionStatTotalDTO\|array` | Get consumption stats |
+| `consumerMassPaymentPeriod()` | `array $consumersIds`, `int $paymentPeriod`, `bool $autoRenewal` | `ArrayDTO\|array` | Mass update payment period |
+| `amlList()` | `?string $fromDate`, `?string $toDate`, `?int $perPage` | `AmlListDTO\|array` | Get AML list |
+| `amlCheck()` | `string $blockchain`, `?string $address`, `?string $txid` | `ArrayDTO\|array` | Check AML status |
+| `getWithdrawals()` | `?int $perPage = 5` | `GetWithdrawalsDTO\|array` | Get withdrawals list |
+| `withdrawals()` | `float $trxAmount`, `string $address`, `string $oneTimePassword` | `ArrayDTO\|array` | Create withdrawal |
+| `stakes()` | `int $perPage = 5` | `GetStakeDTO\|array` | Get stakes list |
+| `stake()` | `float $trxAmount` | `ArrayDTO\|array` | Create stake |
+| `unstake()` | `float $trxAmount`, `$oneTimePassword` | `ArrayDTO\|array` | Unstake funds |
+| `stakeSync()` | - | `ArrayDTO\|array` | Sync stakes |
+| `stakeProfitability()` | `?int $period = null` | `StakeProfitabilityDTO\|array` | Get profitability stats |
+| `partners()` | `?int $leaderId = null` | `StructureDTO\|array` | Get partners structure |
+| `getWallets()` | - | `Collection<WalletDTO>\|array` | Get wallets list |
+| `addWallet()` | `string $address` | `ArrayDTO\|array` | Add wallet |
+| `dropWallet()` | `int $walletId`, `string $oneTimePassword` | `ArrayDTO\|array` | Remove wallet |
 		
 		
-## 🏗 DTO Structure
-
-All responses are type-hinted DTOs:
-```php 
-$account = Trenergy::getAccount();
-echo $account->name; // string
-echo $account->energy_balance; // float
-
-$consumer = Trenergy::getConsumer(123);
-echo $consumer->order->status; // Access nested OrderDTO
-```
 
 ## 🚨 Error Handling
 
