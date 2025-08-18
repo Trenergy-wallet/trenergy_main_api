@@ -28,6 +28,8 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
+use Apd\Trenergy\Exceptions\TrenergyServerErrorException;
 
 class TrenergyService extends BaseService
 {
@@ -119,13 +121,62 @@ class TrenergyService extends BaseService
     /**
      * @throws GuzzleException
      * @throws \JsonException
+     * @throws \Throwable
      */
-    public function downLoadConsumerList(): string
-    {
-        return $this
-            ->setEndPoint('consumers/download')
-            ->setMethod('GET')
-            ->sendGetContent();
+    public function downLoadConsumerList(
+        ?string $name = null,
+        ?bool $isActive = null,
+        ?bool $autoRenewal = null,
+        ?array $paymentPeriods = [],
+        ?array $wallet = null,
+        ?string $format = null
+    ): string {
+
+        $params = [];
+
+        if ($name) {
+            $params['name'] = $name;
+        }
+
+        if ($isActive) {
+            $params['is_active'] = (int) $isActive;
+        }
+
+        if ($autoRenewal) {
+            $params['auto_renewal'] = (int) $autoRenewal;
+        }
+
+        if (!empty($paymentPeriods)) {
+            foreach ($paymentPeriods as $paymentPeriod) {
+                if (!PaymentPeriod::tryFrom($paymentPeriod)) {
+                    throw new TrenergyWrongPaymentPeriod();
+                }
+            }
+
+            $params['payemnt_periods'] = $paymentPeriods;
+        }
+
+        if (!empty($wallet)) {
+            $params['wallet'] = $wallet;
+        }
+
+        if ($format) {
+            throw_if($format, ['xlsx', 'csv'], new TrenergyServerErrorException('Available formats is xlsx or csv'));
+            $params['format'] = $format;
+        }
+
+        if (empty($params)) {
+            $query =  $this
+                ->setEndPoint('consumers/download')
+                ->setMethod('GET')
+                ->setParams('json', $params);
+        } else {
+            $query =  $this
+                ->setEndPoint('consumers/download')
+                ->setMethod('GET');
+        }
+
+        return $query->sendGetContent();
     }
 
     /**
@@ -481,9 +532,13 @@ class TrenergyService extends BaseService
         return $this->result(ArrayDTO::class, $body);
     }
 
-    public function getWithdrawals(int $perPage = 5)
+    /**
+     * @throws GuzzleException
+     * @throws \JsonException
+     */
+    public function getWithdrawals(?int $perPage = 5)
     {
-        $body = $this->setEndPoint('withdrawals?per_page=' . $perPage)->sendGetContent();
+        $body = $this->setEndPoint('withdrawals?per_page=' . $perPage ?? '5')->sendGetContent();
 
         return $this->result(GetWithdrawalsDTO::class, $body, true);
     }

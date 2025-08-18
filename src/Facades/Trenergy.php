@@ -13,7 +13,6 @@ use Apd\Trenergy\DTO\Consumers\ConsumerDTO;
 use Apd\Trenergy\DTO\Consumers\ConsumerSummaryDTO;
 use Apd\Trenergy\DTO\Consumers\ConsumptionStatTotalDTO;
 use Apd\Trenergy\DTO\Consumers\OrderCreatedDTO;
-use Apd\Trenergy\DTO\Partners\PartnerDTO;
 use Apd\Trenergy\DTO\Partners\StructureDTO;
 use Apd\Trenergy\DTO\Stakes\GetStakeDTO;
 use Apd\Trenergy\DTO\Stakes\StakeProfitabilityDTO;
@@ -28,8 +27,8 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static AccountDTO|array getAccount()
  * @method static AccountTopUpDTO|array getTopUp()
- * @method static Collection<ConsumerDTO>|array getConsumers() Возвращает коллекцию ConsumerDTO
- * @method static string downLoadConsumerList()
+ * @method static Collection<ConsumerDTO>|array getConsumers()
+ * @method static string downLoadConsumerList(?string $name = null, ?bool $isActive = null, ?bool $autoRenewal = null, ?array $paymentPeriods = null, ?array $wallet = null, ?string $format = null)
  * @method static OrderCreatedDTO|array createConsumer(string $paymentPeriod, string $address, float $resourceAmount, string $name, int $autoRenewal = 0)
  * @method static ConsumerDTO|array getConsumer(int $consumerId)
  * @method static ArrayDTO|array activateConsumer(int $consumerId)
@@ -57,7 +56,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static ArrayDTO|array stakeSync()
  * @method static StakeProfitabilityDTO|array stakeProfitability(?int $period = null)
  * @method static StructureDTO|array partners(int $leaderId = null)
- * @method static Collection<WalletDTO>|array getWallets() Возвращает коллекцию WalletDTO
+ * @method static Collection<WalletDTO>|array getWallets()
  * @method static ArrayDTO|array addWallet(string $address)
  * @method static ArrayDTO|array dropWallet(int $walletId, string $oneTimePassword)
  *

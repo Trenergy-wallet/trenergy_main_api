@@ -11,7 +11,7 @@ class RequireEnvParameters extends Exception
     public function __construct(
         $message = null,
         $code = 0,
-        Exception $previous = null
+        ?Exception $previous = null
     ) {
         if (!$message) {
             $message = 'Required env parameters is missing. Please obtain and set TRENERGY_API_URL and TRENERGY_API_KEY';
