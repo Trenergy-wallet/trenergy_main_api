@@ -16,8 +16,8 @@ Official PHP client for Trenergy API with full Laravel integration.
 
 ```bash
 composer config repositories.trenergy-main-api vcs https://github.com/Trenergy-wallet/trenergy_main_api
-composer install
-php artisan vendor:publish --provider="Apd\Trenergy\Providers\TrenergyServiceProvider" --tag="config"
+composer require trenergy-wallet/api:^1.0.1
+
 ```
 
 ## ⚙️ Configuration
