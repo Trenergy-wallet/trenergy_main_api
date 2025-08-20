@@ -230,51 +230,41 @@ class TrenergyService extends BaseService
         return $this->result(ArrayDTO::class, $body);
     }
 
-    /**
-     * @throws GuzzleException
-     * @throws \JsonException
-     */
-    public function buyEnergy(
-        string $paymentPeriod,
-        string $address,
-        float $resourceAmount,
-        string $name,
-        int $autoRenewal = 0
-    ) {
-        $createConsumer = $this
-            ->setEndPoint('consumers')
-            ->setMethod('POST')
-            ->setHeaders(['Service-lang' => 'en'])
-            ->setParams('json', [
-                'payment_period' => $paymentPeriod,
-                'address' => $address,
-                'auto_renewal' => $autoRenewal,
-                'resource_amount' => $resourceAmount,
-                'name' => $name
-            ])
-            ->sendGetContent();
-
-        if (is_array($createConsumer) && array_key_exists('status', $createConsumer) && !$createConsumer['status']) {
-            return $createConsumer;
-        }
-
-        $createdOrder = $this->result(OrderCreatedDTO::class, $createConsumer);
-
-        return $this->activateConsumer($createdOrder->id);
-    }
-
     public function createAndActivate(
-        string $paymentPeriod,
+        int $paymentPeriod,
         string $address,
         int $autoRenewal = 0,
         float $resourceAmount,
         ?string $name = null,
         ?string $webHookUrl = null
     ) {
+        
+        if(PaymentPeriod::tryFrom($paymentPeriod) === null) {
+            throw new TrenergyWrongPaymentPeriod();
+        }
+
+        $params = [
+            'payment_period' => $paymentPeriod,
+            'address' => $address,
+            'auto_renewal' => (int) (bool) $autoRenewal,
+            'resource_amount' => $resourceAmount
+        ];
+
+        if ($name) {
+            $params['name'] = $name;
+        }
+
+        if ($webHookUrl) {
+            $params['webhook_url'] = $webHookUrl;
+        }
+
         $body = $this
             ->setEndPoint('consumers/bootstrap-order')
-            ->setMethod('POST');
+            ->setMethod('GET')
+            ->setParams('json', $params)
+            ->sendGetContent();
 
+        return $this->result(OrderCreatedDTO::class, $body);
     }
 
     public function deActivateConsumer(int $consumerId)

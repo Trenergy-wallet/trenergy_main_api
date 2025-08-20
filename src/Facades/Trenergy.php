@@ -46,7 +46,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static ArrayDTO|array consumerMassPaymentPeriod(array $consumersIds, int $paymentPeriod, bool $autoRenewal)
  * @method static AmlListDTO|array amlList(?string $fromDate = null, ?string $toDate = null, ?int $perPage = null)
  * @method static ArrayDTO|array amlCheck(string $blockchain, ?string $address = null, ?string $txid = null)
- * @method static ArrayDTO|array buyEnergy(string $paymentPeriod, string $address, float $resourceAmount, string $name, int $autoRenewal = 0)
+ * @method static ArrayDTO|array createAndActivate( int $paymentPeriod, string $address, int $autoRenewal = 0, float $resourceAmount, ?string $name = null, ?string $webHookUrl = null)
  * @method static GetWithdrawalsDTO|array getWithdrawals(int $perPage = 5)
  * @method static ArrayDTO|array withdrawals(float $trxAmount, string $address, string $oneTimePassword)
  * @method static SubscribeDTO|array subscribe(bool $isBalanceUsed, bool $isCredit = false)

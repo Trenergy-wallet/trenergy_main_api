@@ -309,9 +309,10 @@ class TrenergyServiceTest extends TestCase
         $this->trenergyService->method('sendGetContent')
             ->willReturn($mockResponseFail);
 
-        $resultFail = $this->trenergyService->buyEnergy(
-            '15',
+        $resultFail = $this->trenergyService->createAndActivate(
+            15,
             "TY3dRk4eQ75dCrW7tUcCzggU9rnz4V1111",
+            0,
             2000,
             "My consumer"
         );
