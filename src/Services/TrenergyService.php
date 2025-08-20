@@ -263,6 +263,20 @@ class TrenergyService extends BaseService
         return $this->activateConsumer($createdOrder->id);
     }
 
+    public function createAndActivate(
+        string $paymentPeriod,
+        string $address,
+        int $autoRenewal = 0,
+        float $resourceAmount,
+        ?string $name = null,
+        ?string $webHookUrl = null
+    ) {
+        $body = $this
+            ->setEndPoint('consumers/bootstrap-order')
+            ->setMethod('POST');
+
+    }
+
     public function deActivateConsumer(int $consumerId)
     {
         $body = $this
