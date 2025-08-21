@@ -260,10 +260,10 @@ class TrenergyService extends BaseService
 
         $body = $this
             ->setEndPoint('consumers/bootstrap-order')
-            ->setMethod('GET')
+            ->setMethod('POST')
             ->setParams('json', $params)
             ->sendGetContent();
-
+        
         return $this->result(OrderCreatedDTO::class, $body);
     }
 
