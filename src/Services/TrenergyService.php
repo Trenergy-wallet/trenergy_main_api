@@ -89,7 +89,7 @@ class TrenergyService extends BaseService
             'is_balance_used' => (int) $isBalanceUsed
         ];
 
-        if (!is_null($isCredit)) {
+        if ($isCredit !== null) {
             $params['is_credit'] = (int) $isCredit;
         }
 
@@ -540,10 +540,12 @@ class TrenergyService extends BaseService
      * @throws GuzzleException
      * @throws \JsonException
      */
-    public function getWithdrawals(?int $perPage = 5)
+    public function getWithdrawals(int|null $perPage)
     {
-        $body = $this->setEndPoint('withdrawals?per_page=' . $perPage ?? '5')->sendGetContent();
-
+        $queryParam = $perPage ? 'per_page=' . $perPage : '';
+        
+        $body = $this->setEndPoint('withdrawals?' . $queryParam)->sendGetContent();
+        
         return $this->result(GetWithdrawalsDTO::class, $body, true);
     }
 
@@ -551,16 +553,24 @@ class TrenergyService extends BaseService
      * @throws GuzzleException
      * @throws \JsonException
      */
-    public function withdrawals(float $trxAmount, string $address, string $oneTimePassword)
+    public function withdrawals(float $trxAmount, ?string $address = null, ?string $oneTimePassword = null)
     {
+        $params = [
+                'trx_amount' => $trxAmount,
+            ];
+
+        if ($address) {
+            $params['address'] = $address;
+        }
+
+        if ($oneTimePassword) {
+            $params['one_time_password'] = $oneTimePassword;
+        }
+        
         $body = $this
             ->setMethod('POST')
             ->setEndPoint('withdrawals')
-            ->setParams('json', [
-                'trx_amount' => $trxAmount,
-                'address' => $address,
-                'one_time_password' => $oneTimePassword
-            ])
+            ->setParams('json', $params)
             ->sendGetContent();
 
         return $this->result(ArrayDTO::class, $body);
@@ -623,7 +633,7 @@ class TrenergyService extends BaseService
         return $this->result(StakeProfitabilityDTO::class, $body, true);
     }
 
-    public function partners(int $leaderId = null)
+    public function partners(int|null $leaderId = null)
     {
         $endpoint = 'structure/partners';
 
@@ -653,8 +663,13 @@ class TrenergyService extends BaseService
         return $this->result(ArrayDTO::class, $body);
     }
 
-    public function dropWallet(int $walletId, string $oneTimePassword)
+    public function dropWallet(int $walletId, string|null $oneTimePassword = null)
     {
+        
+        if ($oneTimePassword) {
+            $params['one_time_password'] = $oneTimePassword;
+        }
+
         $body = $this
             ->setMethod('DELETE')
             ->setEndPoint('wallets/' . $walletId . '?one_time_password=' . $oneTimePassword)->sendGetContent();

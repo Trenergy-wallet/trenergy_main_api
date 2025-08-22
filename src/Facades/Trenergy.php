@@ -47,18 +47,18 @@ use Illuminate\Support\Facades\Facade;
  * @method static AmlListDTO|array amlList(?string $fromDate = null, ?string $toDate = null, ?int $perPage = null)
  * @method static ArrayDTO|array amlCheck(string $blockchain, ?string $address = null, ?string $txid = null)
  * @method static ArrayDTO|array createAndActivate( int $paymentPeriod, string $address, int $autoRenewal = 0, float $resourceAmount, ?string $name = null, ?string $webHookUrl = null)
- * @method static GetWithdrawalsDTO|array getWithdrawals(int $perPage = 5)
+ * @method static GetWithdrawalsDTO|array getWithdrawals(int|null $perPage = 5)
  * @method static ArrayDTO|array withdrawals(float $trxAmount, string $address, string $oneTimePassword)
  * @method static SubscribeDTO|array subscribe(bool $isBalanceUsed, bool $isCredit = false)
  * @method static GetStakeDTO|array stakes(int $perPage = 5)
  * @method static ArrayDTO|array stake(float $trxAmount)
- * @method static ArrayDTO|array unstake(float $trxAmount, int $oneTimePassword)
+ * @method static ArrayDTO|array unstake(float $trxAmount, string|null $oneTimePassword = null)
  * @method static ArrayDTO|array stakeSync()
  * @method static StakeProfitabilityDTO|array stakeProfitability(?int $period = null)
  * @method static StructureDTO|array partners(int $leaderId = null)
  * @method static Collection<WalletDTO>|array getWallets()
  * @method static ArrayDTO|array addWallet(string $address)
- * @method static ArrayDTO|array dropWallet(int $walletId, string $oneTimePassword)
+ * @method static ArrayDTO|array dropWallet(int $walletId, string|null $oneTimePassword = null)
  *
  * @see TrenergyService
  */
