@@ -11,9 +11,9 @@ use Apd\Trenergy\DTO\ArrayDTO;
 use Apd\Trenergy\DTO\Consumers\BlockchainEnergyDTO;
 use Apd\Trenergy\DTO\Consumers\ConsumerDTO;
 use Apd\Trenergy\DTO\Consumers\ConsumerSummaryDTO;
+use Apd\Trenergy\DTO\Consumers\ConsumptionStatDTO;
 use Apd\Trenergy\DTO\Consumers\ConsumptionStatTotalDTO;
 use Apd\Trenergy\DTO\Consumers\OrderCreatedDTO;
-use Apd\Trenergy\DTO\Partners\PartnerDTO;
 use Apd\Trenergy\DTO\Partners\StructureDTO;
 use Apd\Trenergy\DTO\Stakes\GetStakeDTO;
 use Apd\Trenergy\DTO\Stakes\StakeProfitabilityDTO;
@@ -28,7 +28,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use GuzzleHttp\Client;
-use Illuminate\Support\Arr;
 use Apd\Trenergy\Exceptions\TrenergyServerErrorException;
 
 class TrenergyService extends BaseService
@@ -436,18 +435,19 @@ class TrenergyService extends BaseService
     {
         $param['from_date'] = $this->dateArgumentValidation($fromDate);
         $param['to_date'] = $this->dateArgumentValidation($toDate);
-
         if ($perPage) {
             $param['per_page'] = $perPage;
         }
 
         $formData = http_build_query($param , '', '&');
 
+        // dd($formData);
+    
         $body = $this
             ->setEndPoint('consumers/consumption-stats?' . $formData)
             ->sendGetContent();
-
-        return $this->result(ConsumptionStatTotalDTO::class, $body);
+        
+        return $this->result(ConsumptionStatDTO::class, $body, true);
     }
 
     /**
@@ -685,13 +685,13 @@ class TrenergyService extends BaseService
         }
 
         $body = json_decode($body, true, 512, JSON_THROW_ON_ERROR)['data'];
-
+ 
         if ($isCollection && is_array($body)) {
             $collection = new Collection();
             foreach ($body as $item) {
                 $collection->add(new $dtoClass($item));
             }
-
+            
             return $collection;
         }
 
