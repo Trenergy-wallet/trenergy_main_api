@@ -49,7 +49,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static AmlWalletTypeDTO|array amlWalletType(string $address)
  * @method static ArrayDTO|array amlRepeatDeclined(int $amlId)
  * @method static ArrayDTO|array amlDeleteById(int $amlId)
- * @method static array amlShow(int $amlId)
+ * @method static AmlCheckResultDTO|array amlShow(int $amlId)
  * @method static ArrayDTO|array createAndActivate( int $paymentPeriod, string $address, int $autoRenewal = 0, float $resourceAmount, ?string $name = null, ?string $webHookUrl = null)
  * @method static GetWithdrawalsDTO|array getWithdrawals(int|null $perPage)
  * @method static ArrayDTO|array withdrawals(float $trxAmount, string $address, string $oneTimePassword)
