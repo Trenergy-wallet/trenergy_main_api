@@ -7,6 +7,6 @@ return [
     'headers' => [
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
-        'Service-lang' =>  env('TRENERGY_API_LANG')
+        'Service-lang' => 'en' 
     ]
 ];

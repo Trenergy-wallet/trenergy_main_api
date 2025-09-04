@@ -6,7 +6,10 @@ namespace Apd\Trenergy\Services;
 use Apd\Trenergy\DTO\Account\AccountDTO;
 use Apd\Trenergy\DTO\Account\AccountTopUpDTO;
 use Apd\Trenergy\DTO\Account\SubscribeDTO;
+use Apd\Trenergy\DTO\Aml\AmlCheckResultDTO;
 use Apd\Trenergy\DTO\Aml\AmlListDTO;
+use Apd\Trenergy\DTO\Aml\AmlWalletType;
+use Apd\Trenergy\DTO\Aml\AmlWalletTypeDTO;
 use Apd\Trenergy\DTO\ArrayDTO;
 use Apd\Trenergy\DTO\Consumers\BlockchainEnergyDTO;
 use Apd\Trenergy\DTO\Consumers\ConsumerDTO;
@@ -97,7 +100,7 @@ class TrenergyService extends BaseService
             ->setEndPoint('account/subscribe')
             ->setParams('json', $params)
             ->sendGetContent();
-
+            
         return $this->result(SubscribeDTO::class, $body);
     }
 
@@ -536,6 +539,33 @@ class TrenergyService extends BaseService
         return $this->result(ArrayDTO::class, $body);
     }
 
+    public function amlWalletType(string $address)
+    {
+        $body = $this
+            ->setEndPoint('aml/wallet-type?address=' . $address)
+            ->sendGetContent();
+            
+        return $this->result(AmlWalletTypeDTO::class, $body);
+    }
+
+    public function amlShow(int $amlId)
+    {
+        $body = $this->setEndPoint("aml/{$amlId}")->sendGetContent();
+        return $this->result(AmlCheckResultDTO::class, $body);
+    }
+
+    public function amlRepeatDeclined(int $amlId)
+    {
+        $body = $this->setMethod('PATCH')->setEndPoint("aml/{$amlId}")->sendGetContent();
+        return $this->result(ArrayDTO::class, $body);
+    }
+
+    public function amlDeleteById($amlId)
+    {
+        $body = $this->setMethod('DELETE')->setEndPoint("aml/{$amlId}")->sendGetContent();
+        return $this->result(ArrayDTO::class, $body);
+    }
+
     /**
      * @throws GuzzleException
      * @throws \JsonException
@@ -576,9 +606,11 @@ class TrenergyService extends BaseService
         return $this->result(ArrayDTO::class, $body);
     }
 
-    public function stakes(int $perPage = 5)
+    public function stakes(int|null $perPage)
     {
-        $body = $this->setEndPoint('stakes?per_page=' . $perPage)->sendGetContent();
+        $perPage ??= 5;
+        
+        $body = $this->setEndPoint("stakes?per_page={$perPage}")->sendGetContent();
 
         return $this->result(GetStakeDTO::class, $body, true);
     }
@@ -683,9 +715,13 @@ class TrenergyService extends BaseService
         if (is_array($body)) {
             return $body;
         }
+        
+        $body = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 
-        $body = json_decode($body, true, 512, JSON_THROW_ON_ERROR)['data'];
- 
+        if (key_exists('data', $body)) {
+            $body = $body['data'];                
+        }
+        
         if ($isCollection && is_array($body)) {
             $collection = new Collection();
             foreach ($body as $item) {
