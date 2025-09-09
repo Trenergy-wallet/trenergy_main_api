@@ -92,9 +92,9 @@ $wallets = Trenergy::getWallets();
 | `amlList()` | `?string $fromDate`, `?string $toDate`, `?int $perPage` | `AmlListDTO\|array` | Get AML list |
 | `amlCheck()` | `string $blockchain`, `?string $address`, `?string $txid` | `ArrayDTO\|array` | Check AML status |
 | `amlWalletType()` | `string $address` | `AmlWalletTypeDTO\|array` | Check AML status |
-| `amlShow()` | `int $amlId` | `AmlCheckResultDTO\|array` | Check AML status |
-| `amlRepeatDeclined()` | `int $amlId` | `ArrayDTO\|array` | Check AML status |
-| `amlDeleteById()` | `int $amlId` | `ArrayDTO\|array` | Check AML status |
+| `amlShow()` | `int $amlId` | `AmlCheckResultDTO\|array` | Show AML |
+| `amlRepeatDeclined()` | `int $amlId` | `ArrayDTO\|array` | Repeat AML when Declined |
+| `amlDeleteById()` | `int $amlId` | `ArrayDTO\|array` | Delete AML Report |
 | `getWithdrawals()` | `?int $perPage = 5` | `GetWithdrawalsDTO\|array` | Get withdrawals list |
 | `withdrawals()` | `float $trxAmount`, `string $address`, `string $oneTimePassword` | `ArrayDTO\|array` | Create withdrawal |
 | `stakes()` | `int $perPage = 5` | `GetStakeDTO\|array` | Get stakes list |

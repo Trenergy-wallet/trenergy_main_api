@@ -1,12 +1,12 @@
 {
-    "name": "trenergy-wallet/api",
+    "name": "trenergy-wallet/apitrenergy_main_api",
     "description": "Trenergy API client for Laravel",
     "type": "library",
     "license": "MIT",
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "authors": [{
-        "name": "apd"
+        "name": "support-tr.energy",
+        "email": "support@tr.energy"
     }],
     "autoload": {
         "psr-4": {
