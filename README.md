@@ -15,8 +15,10 @@
 
 </details>
 
-[![Latest Version](https://img.shields.io/packagist/v/apd/trenergy.svg?style=flat-square)](hhttps://packagist.org/packages/trenergy-wallet/trenergy_main_api)
-[![License](https://img.shields.io/packagist/l/apd/trenergy.svg?style=flat-square)](https://packagist.org/packages/trenergy-wallet/trenergy_main_api)
+[![Latest Stable Version](https://poser.pugx.org/trenergy-wallet/trenergy_main_api/v)](https://packagist.org/packages/trenergy-wallet/trenergy_main_api)
+[![Total Downloads](https://poser.pugx.org/trenergy-wallet/trenergy_main_api/downloads)](https://packagist.org/packages/trenergy-wallet/trenergy_main_api)
+[![License](https://poser.pugx.org/trenergy-wallet/trenergy_main_api/license)](https://packagist.org/packages/trenergy-wallet/trenergy_main_api)
+[![PHP Version](https://img.shields.io/packagist/php-v/trenergy-wallet/trenergy_main_api)](https://packagist.org/packages/trenergy-wallet/trenergy_main_api)
 
 Official PHP client for Trenergy API with full Laravel integration.
 
