@@ -1,5 +1,5 @@
 {
-    "name": "trenergy-wallet/apitrenergy_main_api",
+    "name": "trenergy-wallet/trenergy_main_api",
     "description": "Trenergy API client for Laravel",
     "type": "library",
     "license": "MIT",
