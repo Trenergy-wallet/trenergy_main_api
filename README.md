@@ -25,7 +25,7 @@ Official PHP client for [TR.ENERGY](https://TR.ENERGY/en/) API with full Laravel
 ## 📦 Requirements
 
 - PHP 8.2+
-- Laravel 9.x or 10.x
+- Laravel 12
 - GuzzleHTTP 7.0+
 
 ## 🚀 Installation
