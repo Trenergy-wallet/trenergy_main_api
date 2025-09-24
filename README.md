@@ -20,7 +20,7 @@
 [![License](https://poser.pugx.org/trenergy-wallet/trenergy_main_api/license)](https://packagist.org/packages/trenergy-wallet/trenergy_main_api)
 [![PHP Version](https://img.shields.io/packagist/php-v/trenergy-wallet/trenergy_main_api)](https://packagist.org/packages/trenergy-wallet/trenergy_main_api)
 
-Official PHP client for Trenergy API with full Laravel integration.
+Official PHP client for [TR.ENERGY](https://TR.ENERGY/en/) API with full Laravel integration.
 
 ## 📦 Requirements
 
